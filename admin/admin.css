@@ -193,17 +193,17 @@ textarea {
 
 .preview-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
 }
 
 .photo-option {
   position: relative;
   border: 2px solid transparent;
-  background: transparent;
+  background: #fffaf2;
   padding: 0;
-  cursor: pointer;
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .photo-option.active {
@@ -217,6 +217,37 @@ textarea {
   border-radius: 6px;
   background: #ddd8ce;
   display: block;
+}
+
+.photo-option-body {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.photo-option-body strong,
+.photo-option-body span {
+  overflow-wrap: anywhere;
+}
+
+.photo-option-body span {
+  color: #746b5f;
+  font-size: 13px;
+}
+
+.photo-option-controls,
+.photo-detail-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.photo-detail-card {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid #d5ccbf;
 }
 
 .cover-badge,

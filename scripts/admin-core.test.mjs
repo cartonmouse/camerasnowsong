@@ -72,7 +72,11 @@ try {
     path: "IMG_0661.jpg",
     src: "/photos/%E6%B2%99%E9%87%91/IMG_0661.jpg",
     isCover: true,
-    isStar: true
+    isStar: true,
+    title: "\u5927\u9009\u83b7\u80dc\uff01",
+    description: "\u5728\u65b0\u7684\u7ade\u9009\u5f53\u4e2d\uff0c\u6211\u80dc\u5229\u4e86\uff01",
+    location: "",
+    year: ""
   });
   assert.equal(shaJinAlbum.photos["IMG_0661.jpg"].title, "\u5927\u9009\u83b7\u80dc\uff01");
 
@@ -110,6 +114,63 @@ try {
   });
   const savedWithStar = JSON.parse(await readFile(path.join(photosRoot, shaJin, "album.json"), "utf8"));
   assert.equal(savedWithStar.photos["IMG_0661.jpg"].star, true);
+
+  await saveAlbumMetadata({
+    projectRoot: tempRoot,
+    albumId: shaJin,
+    metadata: {
+      title: "\u6c99\u91d1\u7cbe\u9009",
+      topics: ["Cosplay", "\u821e\u53f0"],
+      description: "\u66f4\u65b0\u540e\u7684\u76f8\u518c\u4ecb\u7ecd\u3002",
+      featured: false,
+      cover: "IMG_0661.jpg",
+      starredPhotos: ["IMG_0661.jpg"],
+      photoDetails: {
+        "IMG_0661.jpg": {
+          title: "\u5927\u9009\u83b7\u80dc\uff01",
+          description: "\u5728\u65b0\u7684\u7ade\u9009\u5f53\u4e2d\uff0c\u6211\u80dc\u5229\u4e86\uff01",
+          location: "\u4f1a\u573a",
+          year: "2024"
+        }
+      }
+    }
+  });
+  const savedWithDetails = JSON.parse(await readFile(path.join(photosRoot, shaJin, "album.json"), "utf8"));
+  assert.deepEqual(savedWithDetails.photos["IMG_0661.jpg"], {
+    title: "\u5927\u9009\u83b7\u80dc\uff01",
+    description: "\u5728\u65b0\u7684\u7ade\u9009\u5f53\u4e2d\uff0c\u6211\u80dc\u5229\u4e86\uff01",
+    star: true,
+    location: "\u4f1a\u573a",
+    year: "2024"
+  });
+  const albumWithDetails = await readAlbum({ projectRoot: tempRoot, albumId: shaJin });
+  assert.equal(albumWithDetails.previewPhotos[0].title, "\u5927\u9009\u83b7\u80dc\uff01");
+  assert.equal(albumWithDetails.previewPhotos[0].description, "\u5728\u65b0\u7684\u7ade\u9009\u5f53\u4e2d\uff0c\u6211\u80dc\u5229\u4e86\uff01");
+  assert.equal(albumWithDetails.previewPhotos[0].location, "\u4f1a\u573a");
+  assert.equal(albumWithDetails.previewPhotos[0].year, "2024");
+
+  await saveAlbumMetadata({
+    projectRoot: tempRoot,
+    albumId: shaJin,
+    metadata: {
+      title: "\u6c99\u91d1\u7cbe\u9009",
+      topics: ["Cosplay", "\u821e\u53f0"],
+      description: "\u66f4\u65b0\u540e\u7684\u76f8\u518c\u4ecb\u7ecd\u3002",
+      featured: false,
+      cover: "IMG_0661.jpg",
+      starredPhotos: [],
+      photoDetails: {
+        "IMG_0661.jpg": {
+          title: "",
+          description: "",
+          location: "",
+          year: ""
+        }
+      }
+    }
+  });
+  const savedWithoutDetails = JSON.parse(await readFile(path.join(photosRoot, shaJin, "album.json"), "utf8"));
+  assert.equal(savedWithoutDetails.photos["IMG_0661.jpg"], undefined);
 
   const homepageBefore = await readHomepageConfig({ projectRoot: tempRoot });
   assert.deepEqual(homepageBefore, { items: [], limit: 12 });

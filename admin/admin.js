@@ -2,6 +2,7 @@ const state = {
   albums: [],
   selectedId: "",
   mode: "album",
+  editingPhotoPath: "",
   homepage: { items: [], limit: 12 },
   topics: ["风景", "人像", "Cosplay", "城市", "旅行", "舞台", "纪实", "日常", "待分类"]
 };
@@ -58,6 +59,13 @@ elements.addTopic.addEventListener("click", () => {
 });
 
 elements.previews.addEventListener("click", (event) => {
+  const editButton = event.target.closest("[data-photo-edit-path]");
+  if (editButton) {
+    state.editingPhotoPath = state.editingPhotoPath === editButton.dataset.photoEditPath ? "" : editButton.dataset.photoEditPath;
+    renderEditor(selectedAlbum());
+    return;
+  }
+
   const button = event.target.closest("[data-star-path]");
   if (!button) return;
   const album = selectedAlbum();
@@ -68,6 +76,16 @@ elements.previews.addEventListener("click", (event) => {
   renderEditor(album);
   renderHomeManager();
   setStatus(photo.isStar ? "已标记为首页照片，保存相册信息后生效。" : "已取消首页标记，保存相册信息后生效。");
+});
+
+elements.previews.addEventListener("input", (event) => {
+  const field = event.target.closest("[data-photo-field]");
+  if (!field) return;
+  const album = selectedAlbum();
+  if (!album) return;
+  const photo = (album.previewPhotos || []).find((item) => item.path === field.dataset.photoPath);
+  if (!photo) return;
+  photo[field.dataset.photoField] = field.value;
 });
 
 elements.syncButton.addEventListener("click", async () => {
@@ -205,11 +223,45 @@ function renderEditor(album) {
     .map((photo) => {
       const isCover = photo.path === (album.cover || "");
       const isStar = photo.isStar === true;
-      return `<button class="photo-option ${isStar ? "active" : ""}" type="button" data-star-path="${escapeHtml(photo.path)}" title="${isStar ? "取消首页展示" : "设为首页展示"}">
+      const isEditing = state.editingPhotoPath === photo.path;
+      const displayTitle = photo.title || photo.path;
+      return `<article class="photo-option ${isStar ? "active" : ""}">
         <img src="${photo.src}" alt="${escapeHtml(album.title || album.id)}" loading="lazy" />
         ${isCover ? '<span class="cover-badge">相册封面</span>' : ""}
         <span class="star-badge">${isStar ? "首页展示" : "设为首页"}</span>
-      </button>`;
+        <div class="photo-option-body">
+          <strong>${escapeHtml(displayTitle)}</strong>
+          <span>${escapeHtml(photo.path)}</span>
+          <div class="photo-option-controls">
+            <button class="secondary-button" type="button" data-star-path="${escapeHtml(photo.path)}">${isStar ? "取消首页" : "设为首页"}</button>
+            <button class="secondary-button" type="button" data-photo-edit-path="${escapeHtml(photo.path)}">${isEditing ? "收起信息" : "编辑信息"}</button>
+          </div>
+          ${
+            isEditing
+              ? `<div class="photo-detail-card">
+                  <label class="field">
+                    <span>照片标题</span>
+                    <input class="photo-title-input" type="text" value="${escapeHtml(photo.title || "")}" data-photo-path="${escapeHtml(photo.path)}" data-photo-field="title" autocomplete="off" />
+                  </label>
+                  <label class="field">
+                    <span>照片描述</span>
+                    <textarea class="photo-description-input" rows="3" data-photo-path="${escapeHtml(photo.path)}" data-photo-field="description">${escapeHtml(photo.description || "")}</textarea>
+                  </label>
+                  <div class="photo-detail-row">
+                    <label class="field">
+                      <span>地点</span>
+                      <input class="photo-location-input" type="text" value="${escapeHtml(photo.location || "")}" data-photo-path="${escapeHtml(photo.path)}" data-photo-field="location" autocomplete="off" />
+                    </label>
+                    <label class="field">
+                      <span>年份</span>
+                      <input class="photo-year-input" type="text" value="${escapeHtml(photo.year || "")}" data-photo-path="${escapeHtml(photo.path)}" data-photo-field="year" autocomplete="off" />
+                    </label>
+                  </div>
+                </div>`
+              : ""
+          }
+        </div>
+      </article>`;
     })
     .join("");
 }
@@ -337,10 +389,25 @@ async function saveAlbum(album) {
     featured: album.featured !== false,
     cover: album.cover || "",
     topics: album.topics || [],
-    starredPhotos: (album.previewPhotos || []).filter((photo) => photo.isStar).map((photo) => photo.path)
+    starredPhotos: (album.previewPhotos || []).filter((photo) => photo.isStar).map((photo) => photo.path),
+    photoDetails: collectPhotoDetails(album)
   });
   state.albums = state.albums.map((item) => (item.id === saved.id ? saved : item));
   return saved;
+}
+
+function collectPhotoDetails(album) {
+  return Object.fromEntries(
+    (album.previewPhotos || []).map((photo) => [
+      photo.path,
+      {
+        title: photo.title || "",
+        description: photo.description || "",
+        location: photo.location || "",
+        year: photo.year || ""
+      }
+    ])
+  );
 }
 
 function renderTopics(selectedTopics) {

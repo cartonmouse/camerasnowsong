@@ -70,7 +70,11 @@ export async function readAlbum({ projectRoot, albumId }) {
         path: photoPath,
         src: `/photos/${[albumId, ...file.split(path.sep)].map(encodeURIComponent).join("/")}`,
         isCover: photoPath === cover,
-        isStar: photoConfig.star === true
+        isStar: photoConfig.star === true,
+        title: stringValue(photoConfig.title),
+        description: stringValue(photoConfig.description),
+        location: stringValue(photoConfig.location),
+        year: stringValue(photoConfig.year)
       };
     }),
     status: albumStatus({ configExists, topics, description })
@@ -83,10 +87,11 @@ export async function saveAlbumMetadata({ projectRoot, albumId, metadata }) {
   const albumJsonPath = path.join(albumPath, "album.json");
   const existing = await readAlbumJson(albumJsonPath);
   const photoFiles = await collectAlbumImages(albumPath);
-  const photos = updateStarredPhotos({
+  const photos = updatePhotoConfigs({
     photos: existing.photos && typeof existing.photos === "object" && !Array.isArray(existing.photos) ? existing.photos : {},
     photoFiles,
-    starredPhotos: metadata.starredPhotos
+    starredPhotos: metadata.starredPhotos,
+    photoDetails: metadata.photoDetails
   });
   const next = {
     ...existing,
@@ -216,20 +221,30 @@ function getPhotoConfig(photos, photoPath) {
   return photos[photoPath] || photos[basename] || {};
 }
 
-function updateStarredPhotos({ photos, photoFiles, starredPhotos }) {
-  if (!Array.isArray(starredPhotos)) return photos;
-
+function updatePhotoConfigs({ photos, photoFiles, starredPhotos, photoDetails }) {
   const next = structuredClone(photos);
-  const starred = new Set(starredPhotos.map((photoPath) => toAlbumSlashPath(photoPath)).filter(Boolean));
+  const starred = Array.isArray(starredPhotos)
+    ? new Set(starredPhotos.map((photoPath) => toAlbumSlashPath(photoPath)).filter(Boolean))
+    : null;
+  const details = photoDetails && typeof photoDetails === "object" && !Array.isArray(photoDetails) ? photoDetails : {};
 
   for (const file of photoFiles) {
     const photoPath = toAlbumSlashPath(file);
     const key = next[photoPath] ? photoPath : path.basename(photoPath);
     const existing = next[key] && typeof next[key] === "object" && !Array.isArray(next[key]) ? next[key] : {};
     const updated = { ...existing };
-    if (starred.has(photoPath)) {
+    const incoming = details[photoPath] || details[path.basename(photoPath)];
+
+    if (incoming && typeof incoming === "object" && !Array.isArray(incoming)) {
+      assignStringField(updated, "title", incoming.title);
+      assignStringField(updated, "description", incoming.description);
+      assignStringField(updated, "location", incoming.location);
+      assignStringField(updated, "year", incoming.year);
+    }
+
+    if (starred?.has(photoPath)) {
       updated.star = true;
-    } else {
+    } else if (starred) {
       delete updated.star;
     }
 
@@ -241,6 +256,15 @@ function updateStarredPhotos({ photos, photoFiles, starredPhotos }) {
   }
 
   return next;
+}
+
+function assignStringField(target, key, value) {
+  const nextValue = stringValue(value);
+  if (nextValue) {
+    target[key] = nextValue;
+  } else {
+    delete target[key];
+  }
 }
 
 function isEmptyPhotoConfig(photoConfig) {

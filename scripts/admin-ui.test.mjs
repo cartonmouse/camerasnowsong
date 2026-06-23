@@ -11,5 +11,11 @@ assert.match(adminScript, /置顶/);
 assert.match(adminScript, /置底/);
 assert.match(adminScript, /direction === "top"/);
 assert.match(adminScript, /direction === "bottom"/);
+assert.match(adminScript, /data-photo-edit-path/);
+assert.match(adminScript, /photoDetails/);
+assert.match(adminScript, /photo-title-input/);
+assert.match(adminScript, /photo-description-input/);
+assert.match(adminScript, /photo-location-input/);
+assert.match(adminScript, /photo-year-input/);
 
 console.log("admin ui feedback ok");
