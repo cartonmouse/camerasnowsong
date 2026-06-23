@@ -35,3 +35,6 @@ public/photos/**/*.arw
 public/photos/**/*.cr2
 public/photos/**/*.nef
 public/photos/**/*.dng
+
+# Local git worktrees
+.worktrees/
