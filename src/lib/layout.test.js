@@ -14,6 +14,9 @@ const realImageRule = styles.match(/\.photo-card img\s*\{[^}]+\}/s)?.[0] || "";
 assert.match(realImageRule, /height:\s*auto;/, "real photos should keep intrinsic aspect ratio");
 assert.doesNotMatch(realImageRule, /aspect-ratio:/, "real photos should not be forced into a fixed aspect ratio");
 
+const photoCardRule = styles.match(/\.photo-card\s*\{[^}]+\}/s)?.[0] || "";
+assert.match(photoCardRule, /align-self:\s*center;/, "photo cards should be vertically centered within tall grid rows");
+
 const heroImageRule = styles.match(/\.hero-frame img\s*\{[^}]+\}/s)?.[0] || "";
 assert.match(heroImageRule, /height:\s*auto;/, "hero photo should keep its intrinsic aspect ratio");
 assert.doesNotMatch(heroImageRule, /min-height:/, "hero photo should not be stretched by placeholder sizing");
