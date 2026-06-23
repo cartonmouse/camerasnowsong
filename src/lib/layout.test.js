@@ -19,8 +19,9 @@ assert.match(heroImageRule, /height:\s*auto;/, "hero photo should keep its intri
 assert.doesNotMatch(heroImageRule, /min-height:/, "hero photo should not be stretched by placeholder sizing");
 
 const photoGridRule = styles.match(/\.photo-grid\s*\{[^}]+\}/s)?.[0] || "";
-assert.match(photoGridRule, /column-count:/, "photo grid should use masonry columns so captions stay close to images");
-assert.doesNotMatch(photoGridRule, /display:\s*grid;/, "photo grid should not use row-based grid for mixed aspect ratios");
+assert.match(photoGridRule, /display:\s*grid;/, "photo grid should use row-major grid ordering");
+assert.match(photoGridRule, /grid-template-columns:/, "photo grid should define responsive columns");
+assert.doesNotMatch(styles, /column-count:/, "photo grid should not use column-count masonry ordering");
 
 const lightboxImageRule = styles.match(/\.lightbox-panel img\s*\{[^}]+\}/s)?.[0] || "";
 assert.match(lightboxImageRule, /max-height:/, "opened photos should fit within the viewport height");

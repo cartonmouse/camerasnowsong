@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {
   getAlbums,
   getFeaturedPhotos,
+  getLightboxContextPhotos,
   getPhotosByAlbum,
   getPhotosByTopic,
   getTopics
@@ -74,5 +75,36 @@ assert.deepEqual(getPhotosByTopic(photos, "Cosplay").map((photo) => photo.id), [
 assert.deepEqual(getPhotosByTopic(photos, "all").map((photo) => photo.id), ["a", "b", "c", "d"]);
 assert.deepEqual(getPhotosByAlbum(photos, "sha-jin").map((photo) => photo.id), ["a", "c"]);
 assert.deepEqual(getPhotosByAlbum(photos, "all").map((photo) => photo.id), ["a", "b", "c", "d"]);
+
+const mixedOrderPhotos = [
+  { id: "album-first", album: "album-a", topics: ["Portrait"] },
+  { id: "landscape", album: "album-b", topics: ["Landscape"] },
+  { id: "portrait-next", album: "album-c", topics: ["Portrait"] }
+];
+
+assert.deepEqual(
+  getLightboxContextPhotos(mixedOrderPhotos, {
+    view: "topic",
+    filter: "all",
+    photo: mixedOrderPhotos[0]
+  }).map((photo) => photo.id),
+  ["album-first", "portrait-next"]
+);
+assert.deepEqual(
+  getLightboxContextPhotos(mixedOrderPhotos, {
+    view: "topic",
+    filter: "Landscape",
+    photo: mixedOrderPhotos[1]
+  }).map((photo) => photo.id),
+  ["landscape"]
+);
+assert.deepEqual(
+  getLightboxContextPhotos(mixedOrderPhotos, {
+    view: "album",
+    filter: "album-a",
+    photo: mixedOrderPhotos[0]
+  }).map((photo) => photo.id),
+  ["album-first"]
+);
 
 console.log("photo helpers ok");

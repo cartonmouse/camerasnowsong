@@ -56,3 +56,22 @@ export function getPhotosByAlbum(photos, album) {
   }
   return photos.filter((photo) => (photo.album || photo.category) === album);
 }
+
+export function getLightboxContextPhotos(photos, { view, filter, photo }) {
+  if (view === "album") {
+    return getPhotosByAlbum(photos, filter);
+  }
+
+  if (view === "topic") {
+    if (filter && filter !== "all") {
+      return getPhotosByTopic(photos, filter);
+    }
+
+    const primaryTopic = photo?.topics?.[0];
+    if (primaryTopic) {
+      return getPhotosByTopic(photos, primaryTopic);
+    }
+  }
+
+  return photos;
+}

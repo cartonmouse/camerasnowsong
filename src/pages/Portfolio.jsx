@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import CategoryFilter from "../components/CategoryFilter.jsx";
 import PhotoGrid from "../components/PhotoGrid.jsx";
-import { getAlbums, getPhotosByAlbum, getPhotosByTopic, getTopics } from "../lib/photos.js";
+import { getAlbums, getLightboxContextPhotos, getPhotosByAlbum, getPhotosByTopic, getTopics } from "../lib/photos.js";
 
 export default function Portfolio({ photos, onSelectPhoto }) {
   const [view, setView] = useState("topic");
@@ -17,6 +17,10 @@ export default function Portfolio({ photos, onSelectPhoto }) {
   function changeView(nextView) {
     setView(nextView);
     setFilter("all");
+  }
+
+  function selectPhoto(photo) {
+    onSelectPhoto(photo, getLightboxContextPhotos(photos, { view, filter, photo }));
   }
 
   return (
@@ -40,7 +44,7 @@ export default function Portfolio({ photos, onSelectPhoto }) {
         onSelect={setFilter}
         ariaLabel={view === "topic" ? "题材筛选" : "相册筛选"}
       />
-      <PhotoGrid photos={visiblePhotos} onSelect={onSelectPhoto} />
+      <PhotoGrid photos={visiblePhotos} onSelect={selectPhoto} />
     </main>
   );
 }

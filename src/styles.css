@@ -237,16 +237,17 @@ h2 {
 }
 
 .photo-grid {
-  column-count: 3;
-  column-gap: clamp(14px, 2vw, 24px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  align-items: start;
+  gap: clamp(24px, 3vw, 40px) clamp(14px, 2vw, 24px);
 }
 
 .photo-card {
   display: grid;
   gap: 10px;
-  break-inside: avoid;
   width: 100%;
-  margin: 0 0 clamp(18px, 2.2vw, 30px);
+  margin: 0;
   padding: 0;
   color: inherit;
   background: transparent;
@@ -536,9 +537,6 @@ dd {
     left: auto;
   }
 
-  .photo-grid {
-    column-count: 2;
-  }
 }
 
 @media (max-width: 620px) {
@@ -548,10 +546,6 @@ dd {
 
   .site-header nav {
     max-width: 210px;
-  }
-
-  .photo-grid {
-    column-count: 1;
   }
 
 }
