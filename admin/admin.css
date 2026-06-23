@@ -250,25 +250,15 @@ textarea {
   border-top: 1px solid #d5ccbf;
 }
 
-.cover-badge,
-.star-badge {
+.cover-badge {
   position: absolute;
   left: 8px;
-  bottom: 8px;
+  top: 8px;
   border-radius: 999px;
   background: rgba(54, 51, 46, 0.9);
   color: #fffaf2;
   font-size: 12px;
   padding: 4px 8px;
-}
-
-.star-badge {
-  background: rgba(183, 139, 43, 0.95);
-}
-
-.cover-badge {
-  bottom: auto;
-  top: 8px;
 }
 
 .hidden {

@@ -17,5 +17,6 @@ assert.match(adminScript, /photo-title-input/);
 assert.match(adminScript, /photo-description-input/);
 assert.match(adminScript, /photo-location-input/);
 assert.match(adminScript, /photo-year-input/);
+assert.doesNotMatch(adminScript, /class="star-badge"/);
 
 console.log("admin ui feedback ok");

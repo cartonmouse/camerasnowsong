@@ -228,7 +228,6 @@ function renderEditor(album) {
       return `<article class="photo-option ${isStar ? "active" : ""}">
         <img src="${photo.src}" alt="${escapeHtml(album.title || album.id)}" loading="lazy" />
         ${isCover ? '<span class="cover-badge">相册封面</span>' : ""}
-        <span class="star-badge">${isStar ? "首页展示" : "设为首页"}</span>
         <div class="photo-option-body">
           <strong>${escapeHtml(displayTitle)}</strong>
           <span>${escapeHtml(photo.path)}</span>
