@@ -1,6 +1,6 @@
 export default function PhotoImage({ photo, className = "" }) {
   if (photo.src) {
-    const src = photo.src.startsWith("/photos/")
+    const src = photo.src.startsWith("/")
       ? `${import.meta.env.BASE_URL.replace(/\/$/, "")}${photo.src}`
       : photo.src;
 
