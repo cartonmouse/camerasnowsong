@@ -1,9 +1,13 @@
 export default function PhotoImage({ photo, className = "" }) {
   if (photo.src) {
+    const src = photo.src.startsWith("/photos/")
+      ? `${import.meta.env.BASE_URL.replace(/\/$/, "")}${photo.src}`
+      : photo.src;
+
     return (
       <img
         className={className}
-        src={photo.src}
+        src={src}
         alt={photo.title}
         width={photo.width || undefined}
         height={photo.height || undefined}
