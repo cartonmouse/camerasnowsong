@@ -8,23 +8,43 @@ import photos from "./data/photos.json";
 
 export default function App() {
   const [page, setPage] = useState("home");
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [lightboxState, setLightboxState] = useState(null);
 
   function navigate(nextPage) {
     setPage(nextPage);
-    setSelectedPhoto(null);
+    setLightboxState(null);
+  }
+
+  function openLightbox(photo, contextPhotos) {
+    setLightboxState({
+      photo,
+      photos: contextPhotos?.length ? contextPhotos : [photo]
+    });
+  }
+
+  function showLightboxPhoto(photo) {
+    setLightboxState((current) => ({
+      photo,
+      photos: current?.photos?.length ? current.photos : [photo]
+    }));
   }
 
   return (
     <>
       <Header currentPage={page} onNavigate={navigate} />
       {page === "home" ? (
-        <Home photos={photos} onNavigate={navigate} onSelectPhoto={setSelectedPhoto} />
+        <Home photos={photos} onNavigate={navigate} onSelectPhoto={openLightbox} />
       ) : null}
-      {page === "portfolio" ? <Portfolio photos={photos} onSelectPhoto={setSelectedPhoto} /> : null}
+      {page === "portfolio" ? <Portfolio photos={photos} onSelectPhoto={openLightbox} /> : null}
       {page === "about" ? <About /> : null}
-      {selectedPhoto ? <PhotoLightbox photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} /> : null}
+      {lightboxState ? (
+        <PhotoLightbox
+          photo={lightboxState.photo}
+          photos={lightboxState.photos}
+          onClose={() => setLightboxState(null)}
+          onSelectPhoto={showLightboxPhoto}
+        />
+      ) : null}
     </>
   );
 }
-

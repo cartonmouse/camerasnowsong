@@ -424,11 +424,46 @@ h2 {
   cursor: pointer;
 }
 
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 58px;
+  border-radius: 4px;
+  color: #f4f1ea;
+  background: rgba(38, 37, 34, 0.72);
+  box-shadow: 0 10px 28px rgba(38, 37, 34, 0.16);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.lightbox-nav:hover {
+  background: rgba(38, 37, 34, 0.9);
+}
+
+.lightbox-nav-previous {
+  left: 28px;
+}
+
+.lightbox-nav-next {
+  left: calc(100% - 340px - 24px - 72px);
+}
+
 .lightbox-copy {
   align-self: end;
   max-height: calc(90vh - 36px);
   overflow: auto;
   padding: 38px 12px 12px;
+}
+
+.lightbox-count {
+  margin: 0 0 16px;
+  color: #837a6d;
+  font-size: 0.86rem;
+  font-weight: 700;
 }
 
 .lightbox-copy h2 {
@@ -484,6 +519,21 @@ dd {
   .lightbox-panel .photo-placeholder,
   .lightbox-panel img {
     max-height: 58vh;
+  }
+
+  .lightbox-nav {
+    top: calc(29vh + 18px);
+    width: 40px;
+    height: 48px;
+  }
+
+  .lightbox-nav-previous {
+    left: 24px;
+  }
+
+  .lightbox-nav-next {
+    right: 24px;
+    left: auto;
   }
 
   .photo-grid {

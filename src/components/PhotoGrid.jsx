@@ -11,7 +11,7 @@ export default function PhotoGrid({ photos, onSelect }) {
         <button
           key={photo.id}
           className="photo-card"
-          onClick={() => onSelect(photo)}
+          onClick={() => onSelect(photo, photos)}
         >
           <PhotoImage photo={photo} />
           <span className="photo-meta">
