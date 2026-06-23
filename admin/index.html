@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>照片相册管理</title>
+    <link rel="stylesheet" href="/admin/admin.css" />
+  </head>
+  <body>
+    <main class="admin-shell">
+      <aside class="album-panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">本地工具</p>
+            <h1>相册管理</h1>
+          </div>
+          <div class="panel-actions">
+            <button class="icon-button" id="sync-button" type="button" title="扫描照片文件夹">扫描</button>
+            <button class="icon-button" id="publish-button" type="button" title="更新主站数据">更新主站</button>
+          </div>
+        </div>
+        <div class="status-line" id="status-line">正在读取相册...</div>
+        <div class="mode-tabs" aria-label="管理模块">
+          <button class="mode-tab active" id="album-mode-button" type="button">相册管理</button>
+          <button class="mode-tab" id="home-mode-button" type="button">首页照片管理</button>
+        </div>
+        <div class="album-list" id="album-list"></div>
+      </aside>
+
+      <section class="editor-panel">
+        <form class="editor-card" id="album-form">
+          <div class="editor-header">
+            <div>
+              <p class="eyebrow" id="album-id">未选择</p>
+              <h2 id="editor-title">选择一个相册</h2>
+            </div>
+            <label class="featured-toggle">
+              <input id="featured" type="checkbox" />
+              <span>无 Star 时参与首页回退</span>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>相册名称</span>
+            <input id="title" name="title" type="text" autocomplete="off" />
+          </label>
+
+          <label class="field">
+            <span>相册描述</span>
+            <textarea id="description" name="description" rows="6"></textarea>
+          </label>
+
+          <fieldset class="topic-field">
+            <legend>题材分类</legend>
+            <div class="topic-grid" id="topic-grid"></div>
+            <div class="custom-topic-row">
+              <input id="custom-topic" type="text" placeholder="新增题材，例如：夜景" />
+              <button id="add-topic" type="button">添加</button>
+            </div>
+          </fieldset>
+
+          <input id="cover" name="cover" type="hidden" />
+          <div class="preview-strip" id="preview-strip"></div>
+
+          <div class="actions">
+            <button class="primary-button" type="submit">保存相册信息</button>
+          </div>
+        </form>
+
+        <section class="home-manager hidden" id="home-manager">
+          <div class="editor-header">
+            <div>
+              <p class="eyebrow">首页照片管理</p>
+              <h2>已 Star 的照片</h2>
+            </div>
+            <div class="home-actions">
+              <label class="home-limit-field">
+                <span>展示数量</span>
+                <input id="home-limit" type="number" min="1" max="100" value="12" />
+              </label>
+              <button class="primary-button" id="homepage-save-button" type="button">保存首页顺序</button>
+            </div>
+          </div>
+          <p class="helper-text">用上移、下移调整首页顺序；隐藏的照片保留 Star，但不会显示在首页。保存首页顺序后，再点“更新主站”同步到主网页。</p>
+          <div class="home-photo-grid" id="home-photo-grid"></div>
+        </section>
+      </section>
+    </main>
+
+    <script type="module" src="/admin/admin.js"></script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "personal-photography-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "photos:sync": "node scripts/photo-sync.mjs",
+    "photos:template": "node scripts/photo-sync.mjs --templates",
+    "photos:clean": "node scripts/photo-sync.mjs --clean",
+    "admin": "node scripts/admin-server.mjs",
+    "test:data": "node src/lib/photos.test.js && node scripts/photo-sync.test.mjs && node src/lib/layout.test.js",
+    "test:admin": "node scripts/admin-core.test.mjs && node scripts/admin-server.test.mjs && node scripts/admin-ui.test.mjs"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,31 @@
+{
+  "title": "沙金",
+  "topics": [
+    "人像",
+    "Cosplay",
+    "舞台"
+  ],
+  "description": "一组以角色造型、现场互动和舞台氛围为主的照片。",
+  "featured": true,
+  "photos": {
+    "IMG_0661-已增强-NR.jpg": {
+      "title": "大选获胜！",
+      "description": "在新的竞选当中，我胜利了！",
+      "topics": [],
+      "location": "",
+      "featured": false,
+      "star": true
+    },
+    "IMG_0767-已增强-NR.jpg": {
+      "title": "你没牌了！",
+      "description": "在牌桌上，我从不会输",
+      "topics": [],
+      "location": "",
+      "featured": false
+    },
+    "IMG_0806-已增强-NR.jpg": {
+      "star": true
+    }
+  },
+  "cover": "IMG_0661-已增强-NR.jpg"
+}
