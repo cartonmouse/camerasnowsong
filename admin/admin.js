@@ -27,6 +27,7 @@ const elements = {
   homePhotoGrid: document.querySelector("#home-photo-grid"),
   homeLimit: document.querySelector("#home-limit"),
   homepageSaveButton: document.querySelector("#homepage-save-button"),
+  saveFeedback: document.querySelector("#save-feedback"),
   syncButton: document.querySelector("#sync-button"),
   publishButton: document.querySelector("#publish-button")
 };
@@ -111,13 +112,16 @@ elements.form.addEventListener("submit", async (event) => {
   album.cover = elements.cover.value;
   album.topics = topics;
   setSubmitButtonState(submitButton, true);
+  setSaveFeedback("saving", "保存中...");
   setStatus("正在保存相册信息...");
   try {
     const saved = await saveAlbum(album);
     selectAlbum(saved.id);
     renderHomeManager();
+    setSaveFeedback("success", "保存成功。记得点击“更新主站”同步到网站。");
     setStatus("相册信息已保存。点击“更新主站”后，主网页会读取最新 Star 设置。");
   } catch (error) {
+    setSaveFeedback("error", `保存失败：${error.message}`);
     setStatus(`保存失败：${error.message}`);
   } finally {
     setSubmitButtonState(submitButton, false);
@@ -442,6 +446,12 @@ function setSubmitButtonState(button, isSaving) {
   if (!button) return;
   button.disabled = isSaving;
   button.textContent = isSaving ? "保存中..." : "保存相册信息";
+}
+
+function setSaveFeedback(type, message) {
+  if (!elements.saveFeedback) return;
+  elements.saveFeedback.textContent = message;
+  elements.saveFeedback.dataset.state = type;
 }
 
 async function fetchJson(url) {

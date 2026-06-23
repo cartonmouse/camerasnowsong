@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 const adminScript = await readFile("admin/admin.js", "utf8");
+const adminHtml = await readFile("admin/index.html", "utf8");
+const adminCss = await readFile("admin/admin.css", "utf8");
 
 assert.match(adminScript, /正在保存相册信息/);
 assert.match(adminScript, /保存中/);
@@ -18,5 +20,11 @@ assert.match(adminScript, /photo-description-input/);
 assert.match(adminScript, /photo-location-input/);
 assert.match(adminScript, /photo-year-input/);
 assert.doesNotMatch(adminScript, /class="star-badge"/);
+assert.match(adminHtml, /id="save-feedback"/);
+assert.match(adminScript, /saveFeedback/);
+assert.match(adminScript, /setSaveFeedback/);
+assert.match(adminScript, /保存中/);
+assert.match(adminScript, /保存成功/);
+assert.match(adminCss, /\.save-feedback/);
 
 console.log("admin ui feedback ok");

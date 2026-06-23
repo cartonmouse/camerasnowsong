@@ -39,6 +39,32 @@ textarea {
   gap: 16px;
 }
 
+.actions {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.save-feedback {
+  min-height: 22px;
+  margin: 0;
+  color: #746b5f;
+  font-size: 14px;
+}
+
+.save-feedback[data-state="saving"] {
+  color: #746b5f;
+}
+
+.save-feedback[data-state="success"] {
+  color: #2f6f45;
+  font-weight: 700;
+}
+
+.save-feedback[data-state="error"] {
+  color: #9c2f2f;
+  font-weight: 700;
+}
+
 .panel-actions {
   display: flex;
   flex-wrap: wrap;
