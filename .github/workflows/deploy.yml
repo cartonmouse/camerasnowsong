@@ -43,7 +43,7 @@ jobs:
         run: npm run test:admin
 
       - name: Build
-        run: DEPLOY_TARGET=github-pages npm run build
+        run: CUSTOM_DOMAIN=true DEPLOY_TARGET=github-pages npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v6

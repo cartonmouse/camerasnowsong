@@ -236,19 +236,24 @@ h2 {
   background: #262522;
 }
 
-.album-index {
+.album-picker {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
-  gap: 8px;
+  gap: 10px;
   margin: 0 0 28px;
 }
 
+.album-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .album-entry {
-  display: grid;
-  align-content: start;
-  gap: 5px;
-  min-height: 92px;
-  padding: 12px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 12px;
   border: 1px solid rgba(38, 37, 34, 0.12);
   border-radius: 4px;
   color: inherit;
@@ -262,19 +267,50 @@ h2 {
   background: rgba(255, 255, 255, 0.48);
 }
 
+.album-entry.active {
+  color: #f7f4ee;
+  background: #262522;
+}
+
 .album-entry strong {
-  color: #1f1e1b;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.15rem;
-  font-weight: 500;
-  line-height: 1.18;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.25;
 }
 
 .album-entry span:not(.eyebrow),
 .album-entry small {
-  color: #645f56;
-  font-size: 0.84rem;
-  line-height: 1.35;
+  color: currentColor;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  opacity: 0.72;
+}
+
+.album-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: #706a60;
+  font-size: 0.9rem;
+}
+
+.album-controls button {
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid rgba(38, 37, 34, 0.12);
+  border-radius: 4px;
+  color: #5f5a51;
+  background: rgba(255, 255, 255, 0.24);
+  cursor: pointer;
+}
+
+.album-controls button:hover {
+  border-color: rgba(38, 37, 34, 0.34);
+  color: #262522;
+  background: rgba(255, 255, 255, 0.48);
 }
 
 .album-feature {
