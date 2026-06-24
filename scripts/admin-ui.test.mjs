@@ -26,5 +26,13 @@ assert.match(adminScript, /setSaveFeedback/);
 assert.match(adminScript, /保存中/);
 assert.match(adminScript, /保存成功/);
 assert.match(adminCss, /\.save-feedback/);
+assert.match(adminScript, /主站数据和发布图已更新/);
+assert.match(adminScript, /publishCounts/);
+assert.match(adminScript, /正在更新主站数据并生成发布图/);
+assert.match(adminScript, /setPublishButtonState/);
+assert.match(adminScript, /发布中/);
+assert.match(adminScript, /更新主站失败/);
+assert.match(adminScript, /缺失源文件/);
+assert.match(adminScript, /finally/);
 
 console.log("admin ui feedback ok");

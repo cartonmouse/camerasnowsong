@@ -96,8 +96,7 @@ elements.syncButton.addEventListener("click", async () => {
 });
 
 elements.publishButton.addEventListener("click", async () => {
-  const data = await postJson("/api/publish", {});
-  setStatus(`主站数据已更新，共 ${data.result.photoCount} 张照片。刷新主站即可看到最新内容。`);
+  await runPublish();
 });
 
 elements.form.addEventListener("submit", async (event) => {
@@ -397,6 +396,39 @@ async function saveAlbum(album) {
   });
   state.albums = state.albums.map((item) => (item.id === saved.id ? saved : item));
   return saved;
+}
+
+async function runPublish() {
+  setPublishButtonState(true);
+  setStatus("正在更新主站数据并生成发布图...");
+  try {
+    const data = await postJson("/api/publish", {});
+    const counts = data.result.publishCounts || {};
+    const details = publishCountSummary(counts);
+    setStatus(`主站数据和发布图已更新，共 ${data.result.photoCount} 张照片。${details}刷新主站即可看到最新内容。`);
+  } catch (error) {
+    setStatus(`更新主站失败：${error.message}`);
+  } finally {
+    setPublishButtonState(false);
+  }
+}
+
+function publishCountSummary(counts) {
+  const items = [
+    ["published", "已发布"],
+    ["missing-source", "缺失源文件"],
+    ["skipped-non-local", "跳过"],
+    ["unknown", "未知状态"]
+  ]
+    .filter(([key]) => counts[key] > 0)
+    .map(([key, label]) => `${label} ${counts[key]} 张`);
+
+  return items.length > 0 ? `${items.join("，")}。` : "";
+}
+
+function setPublishButtonState(isPublishing) {
+  elements.publishButton.disabled = isPublishing;
+  elements.publishButton.textContent = isPublishing ? "发布中..." : "更新主站";
 }
 
 function collectPhotoDetails(album) {

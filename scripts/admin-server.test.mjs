@@ -6,13 +6,17 @@ import { createAdminServer } from "./admin-server.mjs";
 
 const tempRoot = await mkdtemp(path.join(tmpdir(), "album-admin-server-"));
 const albumId = "\u76f8\u518cA";
+const validWebp = Buffer.from(
+  "UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA",
+  "base64"
+);
 
 try {
   const photosRoot = path.join(tempRoot, "public", "photos");
   await mkdir(path.join(photosRoot, albumId), { recursive: true });
   await mkdir(path.join(tempRoot, "src", "data"), { recursive: true });
   await mkdir(path.join(tempRoot, "admin"), { recursive: true });
-  await writeFile(path.join(photosRoot, albumId, "IMG_0001.jpg"), Buffer.from([0xff, 0xd8, 0xff, 0xd9]));
+  await writeFile(path.join(photosRoot, albumId, "IMG_0001.webp"), validWebp);
   await writeFile(path.join(tempRoot, "admin", "index.html"), "<title>照片相册管理</title>", "utf8");
   await writeFile(path.join(tempRoot, "admin", "admin.css"), "body { color: #25231f; }", "utf8");
   await writeFile(path.join(tempRoot, "admin", "admin.js"), "console.log('admin page');", "utf8");
@@ -35,10 +39,10 @@ try {
     assert.equal(js.status, 200);
     assert.match(js.headers.get("content-type"), /javascript/);
 
-    const photo = await fetch(`${base}/photos/${encodeURIComponent(albumId)}/IMG_0001.jpg`);
+    const photo = await fetch(`${base}/photos/${encodeURIComponent(albumId)}/IMG_0001.webp`);
     assert.equal(photo.status, 200);
-    assert.match(photo.headers.get("content-type"), /image\/jpeg/);
-    assert.deepEqual([...new Uint8Array(await photo.arrayBuffer())], [0xff, 0xd8, 0xff, 0xd9]);
+    assert.match(photo.headers.get("content-type"), /image\/webp/);
+    assert.deepEqual([...new Uint8Array(await photo.arrayBuffer())], [...validWebp]);
 
     const albums = await fetch(`${base}/api/albums`);
     assert.equal(albums.status, 200);
@@ -77,7 +81,7 @@ try {
       body: JSON.stringify({
         items: [
           {
-            src: `/photos/${encodeURIComponent(albumId)}/IMG_0001.jpg`,
+            src: `/photos/${encodeURIComponent(albumId)}/IMG_0001.webp`,
             hidden: false
           }
         ],
@@ -87,7 +91,7 @@ try {
     assert.equal(saveHomepage.status, 200);
     const savedHomepageJson = await saveHomepage.json();
     assert.equal(savedHomepageJson.limit, 5);
-    assert.equal(savedHomepageJson.items[0].src, `/photos/${encodeURIComponent(albumId)}/IMG_0001.jpg`);
+    assert.equal(savedHomepageJson.items[0].src, `/photos/${encodeURIComponent(albumId)}/IMG_0001.webp`);
 
     const sync = await fetch(`${base}/api/sync`, { method: "POST" });
     assert.equal(sync.status, 200);
@@ -100,9 +104,12 @@ try {
     const publishJson = await publish.json();
     assert.equal(publishJson.ok, true);
     assert.equal(publishJson.result.photoCount, 1);
+    assert.equal(publishJson.result.publishCounts.published, 1);
     const publishedData = JSON.parse(await readFile(path.join(tempRoot, "src", "data", "photos.json"), "utf8"));
     assert.equal(publishedData.length, 1);
     assert.equal(publishedData[0].album, albumId);
+    assert.ok(publishedData[0].thumb);
+    assert.match(publishedData[0].src, /^\/site-photos\/albums\//);
 
     const invalidJson = await fetch(`${base}/api/albums/${encodeURIComponent(albumId)}`, {
       method: "PUT",

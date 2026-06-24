@@ -1,8 +1,13 @@
+import { execFile } from "node:child_process";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createMissingAlbumConfigs, collectPhotoRecords, syncPhotoData } from "./photo-sync.mjs";
+import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 
 const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp"]);
+const execFileAsync = promisify(execFile);
+const scriptsRoot = path.dirname(fileURLToPath(import.meta.url));
 
 export const defaultTopics = ["风景", "人像", "Cosplay", "城市", "旅行", "舞台", "纪实", "日常", "待分类"];
 
@@ -138,10 +143,28 @@ export async function syncAlbums({ projectRoot }) {
 
 export async function publishSiteData({ projectRoot }) {
   const result = await syncPhotoData({ projectRoot });
+  await publishImages({ projectRoot });
+  const records = JSON.parse(await readFile(result.dataPath, "utf8"));
   return {
     dataPath: result.dataPath,
-    photoCount: result.records.length
+    photoCount: records.length,
+    publishCounts: countPublishStatuses(records)
   };
+}
+
+async function publishImages({ projectRoot }) {
+  await execFileAsync("python", [path.join(scriptsRoot, "photo-publish.py"), "--project-root", projectRoot], {
+    cwd: projectRoot,
+    maxBuffer: 1024 * 1024 * 10
+  });
+}
+
+function countPublishStatuses(records) {
+  return records.reduce((counts, record) => {
+    const status = record.publishStatus || "unknown";
+    counts[status] = (counts[status] || 0) + 1;
+    return counts;
+  }, {});
 }
 
 function albumStatus({ configExists, topics, description }) {

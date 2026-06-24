@@ -121,9 +121,10 @@ def publish_photos(project_root: Path, *, force: bool = False) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate web publish images and update src/data/photos.json.")
+    parser.add_argument("--project-root", help="Project root to publish. Defaults to this script's parent project.")
     parser.add_argument("--force", action="store_true", help="Regenerate existing WebP files.")
     args = parser.parse_args()
-    project_root = Path(__file__).resolve().parents[1]
+    project_root = Path(args.project_root).resolve() if args.project_root else Path(__file__).resolve().parents[1]
     result = publish_photos(project_root, force=args.force)
     counts = ", ".join(f"{key}: {value}" for key, value in sorted(result["counts"].items()))
     print(f"Published image data for {result['records']} photos ({counts})")
