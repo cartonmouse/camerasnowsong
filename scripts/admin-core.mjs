@@ -9,7 +9,7 @@ const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp"]);
 const execFileAsync = promisify(execFile);
 const scriptsRoot = path.dirname(fileURLToPath(import.meta.url));
 
-export const defaultTopics = ["风景", "人像", "Cosplay", "城市", "旅行", "舞台", "纪实", "日常", "待分类"];
+export const defaultTopics = ["风景", "人像", "Cosplay", "人文", "日常"];
 
 export function getPhotosRoot(projectRoot) {
   return path.join(projectRoot, "public", "photos");

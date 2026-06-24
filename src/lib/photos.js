@@ -1,4 +1,4 @@
-export const preferredTopics = ["风景", "人像", "Cosplay", "城市", "旅行", "舞台", "纪实", "日常"];
+export const preferredTopics = ["风景", "人像", "Cosplay", "人文", "日常"];
 
 export function getTopics(photos) {
   const found = new Set();
@@ -8,9 +8,7 @@ export function getTopics(photos) {
     }
   }
 
-  const preferred = preferredTopics.filter((topic) => found.has(topic));
-  const extras = [...found].filter((topic) => !preferredTopics.includes(topic)).sort((a, b) => a.localeCompare(b, "zh-CN"));
-  return [...preferred, ...extras];
+  return preferredTopics.filter((topic) => found.has(topic));
 }
 
 export function getAlbums(photos) {

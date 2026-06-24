@@ -51,14 +51,13 @@ try {
     assert.equal(albumsJson.albums.length, 1);
     assert.equal(albumsJson.albums[0].id, albumId);
     assert.equal(albumsJson.albums[0].status, "missing-config");
-    assert.ok(albumsJson.topics.includes("\u5f85\u5206\u7c7b"));
 
     const save = await fetch(`${base}/api/albums/${encodeURIComponent(albumId)}`, {
       method: "PUT",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         title: "\u76f8\u518cA\u7cbe\u9009",
-        topics: ["\u5f85\u5206\u7c7b"],
+        topics: ["\u98ce\u666f"],
         description: "\u4e00\u7ec4\u672c\u5730\u7ba1\u7406\u6d4b\u8bd5\u7167\u7247\u3002",
         featured: true
       })

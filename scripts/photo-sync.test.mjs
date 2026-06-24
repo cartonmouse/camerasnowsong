@@ -17,7 +17,6 @@ const {
 
 const shaJin = "\u6c99\u91d1";
 const portrait = "\u4eba\u50cf";
-const other = "\u5176\u4ed6";
 const tiananmen = "116\u5929\u5b89\u95e8\u5347\u65d7";
 const xingjianya = "1.18\u661f\u89c1\u96c5\uff08\u5df2\u53d1\uff09";
 const robin = "2\u77e5\u66f4\u9e1f_\u97f3\u4e50\u53f0";
@@ -121,7 +120,7 @@ try {
     year: ""
   });
   assert.equal(nested.category, tiananmen);
-  assert.deepEqual(nested.topics, [other]);
+  assert.deepEqual(nested.topics, []);
   assert.equal(nested.src, "/photos/116%E5%A4%A9%E5%AE%89%E9%97%A8%E5%8D%87%E6%97%97/%E7%BB%88%E7%A8%BF/IMG_1885-%E5%B7%B2%E5%A2%9E%E5%BC%BA-%E9%99%8D%E5%99%AA.jpg");
   assert.equal(nested.featured, false);
 

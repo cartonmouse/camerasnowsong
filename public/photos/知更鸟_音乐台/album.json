@@ -1,0 +1,38 @@
+{
+  "title": "2知更鸟_音乐台",
+  "topics": [
+    "人像",
+    "Cosplay",
+    "人文"
+  ],
+  "description": "一组关于2知更鸟_音乐台的照片。",
+  "featured": true,
+  "_comment": "photos 只需要填写那些想单独介绍的照片，不需要每张都写。",
+  "_photoExample": {
+    "照片文件名.jpg": {
+      "title": "",
+      "description": "",
+      "topics": [],
+      "location": "",
+      "featured": false
+    }
+  },
+  "_nestedPhotoExample": {
+    "子文件夹/照片文件名.jpg": {
+      "title": "",
+      "description": "",
+      "topics": [],
+      "location": "",
+      "featured": false
+    }
+  },
+  "photos": {
+    "IMG_9047-已增强-NR_(2).jpg": {
+      "star": true
+    },
+    "IMG_9571-已增强-NR_(2).jpg": {
+      "star": true
+    }
+  },
+  "cover": "IMG_9571-已增强-NR_(2).jpg"
+}

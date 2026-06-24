@@ -49,7 +49,6 @@ try {
   );
 
   assert.ok(defaultTopics.includes(landscape));
-  assert.ok(defaultTopics.includes("\u5f85\u5206\u7c7b"));
 
   assert.equal(resolveAlbumPath({ photosRoot, albumId: shaJin }), path.join(photosRoot, shaJin));
   assert.throws(() => resolveAlbumPath({ photosRoot, albumId: "../outside" }), /Invalid album id/);

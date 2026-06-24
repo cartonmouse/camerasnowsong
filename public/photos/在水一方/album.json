@@ -1,0 +1,28 @@
+{
+  "title": "在水一方",
+  "topics": [
+    "风景"
+  ],
+  "description": "一组关于在水一方的照片。",
+  "featured": true,
+  "_comment": "photos 只需要填写那些想单独介绍的照片，不需要每张都写。",
+  "_photoExample": {
+    "照片文件名.jpg": {
+      "title": "",
+      "description": "",
+      "topics": [],
+      "location": "",
+      "featured": false
+    }
+  },
+  "_nestedPhotoExample": {
+    "子文件夹/照片文件名.jpg": {
+      "title": "",
+      "description": "",
+      "topics": [],
+      "location": "",
+      "featured": false
+    }
+  },
+  "photos": {}
+}

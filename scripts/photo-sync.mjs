@@ -281,7 +281,7 @@ function normalizeAlbumConfig(albumId, parsed) {
   return {
     id: albumId,
     title: parsed.title || albumId,
-    topics: topics.length > 0 ? topics : ["其他"],
+    topics,
     description: parsed.description || "",
     featured: parsed.featured !== false,
     cover: typeof parsed.cover === "string" ? parsed.cover.trim() : "",

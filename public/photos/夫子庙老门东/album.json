@@ -1,0 +1,29 @@
+{
+  "title": "11夫子庙老门东",
+  "topics": [
+    "人文"
+  ],
+  "description": "一组关于11夫子庙老门东的照片。",
+  "featured": true,
+  "_comment": "photos 只需要填写那些想单独介绍的照片，不需要每张都写。",
+  "_photoExample": {
+    "照片文件名.jpg": {
+      "title": "",
+      "description": "",
+      "topics": [],
+      "location": "",
+      "featured": false
+    }
+  },
+  "_nestedPhotoExample": {
+    "子文件夹/照片文件名.jpg": {
+      "title": "",
+      "description": "",
+      "topics": [],
+      "location": "",
+      "featured": false
+    }
+  },
+  "photos": {},
+  "cover": ""
+}

@@ -26,7 +26,7 @@ const photos = [
     src: "/photos/b.jpg",
     album: "great-wall",
     albumTitle: "水长城",
-    topics: ["风景", "旅行"],
+    topics: ["风景"],
     featured: false
   },
   {
@@ -35,7 +35,7 @@ const photos = [
     src: "/photos/c.jpg",
     album: "sha-jin",
     albumTitle: "沙金",
-    topics: ["Cosplay", "舞台"],
+    topics: ["Cosplay", "人文"],
     featured: true,
     isAlbumCover: true
   },
@@ -45,7 +45,7 @@ const photos = [
     src: "/photos/d.jpg",
     album: "daily",
     albumTitle: "日常练习",
-    topics: ["街拍"],
+    topics: ["日常"],
     featured: false
   }
 ];
@@ -60,17 +60,17 @@ orderedPhotos[3].star = true;
 orderedPhotos[3].homeOrder = 2;
 orderedPhotos[3].homeHidden = true;
 
-assert.deepEqual(getTopics(photos), ["风景", "人像", "Cosplay", "旅行", "舞台", "街拍"]);
+assert.deepEqual(getTopics(photos), ["风景", "人像", "Cosplay", "人文", "日常"]);
 assert.deepEqual(getAlbums(photos), [
-  { id: "sha-jin", title: "沙金", description: "", topics: ["Cosplay", "人像", "舞台"], photoCount: 2 },
-  { id: "great-wall", title: "水长城", description: "", topics: ["风景", "旅行"], photoCount: 1 },
-  { id: "daily", title: "日常练习", description: "", topics: ["街拍"], photoCount: 1 }
+  { id: "sha-jin", title: "沙金", description: "", topics: ["Cosplay", "人像", "人文"], photoCount: 2 },
+  { id: "great-wall", title: "水长城", description: "", topics: ["风景"], photoCount: 1 },
+  { id: "daily", title: "日常练习", description: "", topics: ["日常"], photoCount: 1 }
 ]);
 assert.deepEqual(getAlbumDetails(photos, "sha-jin"), {
   id: "sha-jin",
   title: "沙金",
   description: "",
-  topics: ["Cosplay", "人像", "舞台"],
+  topics: ["Cosplay", "人像", "人文"],
   photoCount: 2
 });
 assert.deepEqual(getFeaturedPhotos(photos).map((photo) => photo.id), ["a"]);
