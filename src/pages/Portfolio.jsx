@@ -39,15 +39,17 @@ export default function Portfolio({ photos, onSelectPhoto }) {
           按相册
         </button>
       </div>
-      <CategoryFilter
-        items={[{ id: "all", title: "全部" }, ...filters]}
-        selected={filter}
-        onSelect={setFilter}
-        ariaLabel={view === "topic" ? "题材筛选" : "相册筛选"}
-      />
+      {view === "topic" ? (
+        <CategoryFilter
+          items={[{ id: "all", title: "全部" }, ...filters]}
+          selected={filter}
+          onSelect={setFilter}
+          ariaLabel="题材筛选"
+        />
+      ) : null}
       {view === "album" && filter === "all" ? <AlbumIndex albums={albums} onSelect={setFilter} /> : null}
       {activeAlbum ? <AlbumFeature album={activeAlbum} onBack={() => setFilter("all")} /> : null}
-      <PhotoGrid photos={visiblePhotos} onSelect={selectPhoto} />
+      {view !== "album" || filter !== "all" ? <PhotoGrid photos={visiblePhotos} onSelect={selectPhoto} /> : null}
     </main>
   );
 }
@@ -57,9 +59,8 @@ function AlbumIndex({ albums, onSelect }) {
     <section className="album-index" aria-label="相册入口">
       {albums.map((album) => (
         <button key={album.id} className="album-entry" type="button" onClick={() => onSelect(album.id)}>
-          <span className="eyebrow">{album.photoCount} 张照片</span>
           <strong>{album.title}</strong>
-          {album.description ? <span>{album.description}</span> : null}
+          <span>{album.photoCount} 张照片</span>
           {album.topics.length ? <small>{album.topics.join(" / ")}</small> : null}
         </button>
       ))}

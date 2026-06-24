@@ -238,16 +238,17 @@ h2 {
 
 .album-index {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-  gap: 12px;
-  margin: 0 0 34px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 8px;
+  margin: 0 0 28px;
 }
 
 .album-entry {
   display: grid;
-  gap: 8px;
-  min-height: 160px;
-  padding: 18px;
+  align-content: start;
+  gap: 5px;
+  min-height: 92px;
+  padding: 12px 14px;
   border: 1px solid rgba(38, 37, 34, 0.12);
   border-radius: 4px;
   color: inherit;
@@ -264,14 +265,16 @@ h2 {
 .album-entry strong {
   color: #1f1e1b;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.8rem;
+  font-size: 1.15rem;
   font-weight: 500;
-  line-height: 1.08;
+  line-height: 1.18;
 }
 
 .album-entry span:not(.eyebrow),
 .album-entry small {
   color: #645f56;
+  font-size: 0.84rem;
+  line-height: 1.35;
 }
 
 .album-feature {
