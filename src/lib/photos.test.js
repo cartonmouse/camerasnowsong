@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import {
+  getAlbumDetails,
   getAlbums,
   getFeaturedPhotos,
   getLightboxContextPhotos,
@@ -61,10 +62,17 @@ orderedPhotos[3].homeHidden = true;
 
 assert.deepEqual(getTopics(photos), ["风景", "人像", "Cosplay", "旅行", "舞台", "街拍"]);
 assert.deepEqual(getAlbums(photos), [
-  { id: "sha-jin", title: "沙金" },
-  { id: "great-wall", title: "水长城" },
-  { id: "daily", title: "日常练习" }
+  { id: "sha-jin", title: "沙金", description: "", topics: ["Cosplay", "人像", "舞台"], photoCount: 2 },
+  { id: "great-wall", title: "水长城", description: "", topics: ["风景", "旅行"], photoCount: 1 },
+  { id: "daily", title: "日常练习", description: "", topics: ["街拍"], photoCount: 1 }
 ]);
+assert.deepEqual(getAlbumDetails(photos, "sha-jin"), {
+  id: "sha-jin",
+  title: "沙金",
+  description: "",
+  topics: ["Cosplay", "人像", "舞台"],
+  photoCount: 2
+});
 assert.deepEqual(getFeaturedPhotos(photos).map((photo) => photo.id), ["a"]);
 assert.deepEqual(getFeaturedPhotos(orderedPhotos).map((photo) => photo.id), ["c"]);
 assert.deepEqual(

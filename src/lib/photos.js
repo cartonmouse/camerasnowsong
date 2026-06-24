@@ -19,10 +19,22 @@ export function getAlbums(photos) {
     const id = photo.album || photo.category;
     const title = photo.albumTitle || photo.category || id;
     if (id && !albums.has(id)) {
-      albums.set(id, { id, title });
+      albums.set(id, { id, title, description: photo.albumDescription || "", topics: [], photoCount: 0 });
+    }
+    const album = albums.get(id);
+    if (!album) continue;
+    album.photoCount += 1;
+    for (const topic of photo.topics || []) {
+      if (topic && !album.topics.includes(topic)) {
+        album.topics.push(topic);
+      }
     }
   }
   return [...albums.values()];
+}
+
+export function getAlbumDetails(photos, albumId) {
+  return getAlbums(photos).find((album) => album.id === albumId) || null;
 }
 
 export function getFeaturedPhotos(photos) {
