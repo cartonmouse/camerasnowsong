@@ -188,7 +188,7 @@ function renderAlbumList() {
   elements.list.innerHTML = state.albums
     .map((album) => {
       const statusText = statusLabel(album.status);
-      return `<button class="album-item ${album.id === state.selectedId ? "active" : ""}" type="button" data-album-id="${escapeHtml(album.id)}">
+      return `<button class="album-item ${album.id === state.selectedId ? "active" : ""} ${album.status === "needs-topics" ? "needs-attention" : ""}" type="button" data-album-id="${escapeHtml(album.id)}">
         <strong>${escapeHtml(album.title || album.id)}</strong>
         <span>${album.photoCount} 张照片 · ${statusText}</span>
       </button>`;
@@ -235,6 +235,7 @@ function renderEditor(album) {
   elements.featured.checked = album.featured !== false;
   elements.cover.value = album.cover || "";
   renderTopics(album.topics || []);
+  renderTopicWarning(album);
   elements.previews.innerHTML = (album.previewPhotos || [])
     .map((photo) => {
       const isCover = photo.path === (album.cover || "");
@@ -471,6 +472,16 @@ function renderTopics(selectedTopics) {
       </label>`
     )
     .join("");
+}
+
+function renderTopicWarning(album) {
+  const existing = elements.form.querySelector(".topic-warning");
+  existing?.remove();
+  if (album.status !== "needs-topics") return;
+  const warning = document.createElement("p");
+  warning.className = "topic-warning";
+  warning.textContent = "请选择至少一个题材；否则这些照片不会出现在“按题材”视图中。";
+  elements.topicGrid.insertAdjacentElement("afterend", warning);
 }
 
 function selectedAlbum() {
