@@ -3,6 +3,7 @@ const state = {
   selectedId: "",
   mode: "album",
   editingPhotoPath: "",
+  saveCount: 0,
   homepage: { items: [], limit: 12 },
   topics: ["风景", "人像", "Cosplay", "城市", "旅行", "舞台", "纪实", "日常", "待分类"]
 };
@@ -82,11 +83,21 @@ elements.previews.addEventListener("click", (event) => {
 elements.previews.addEventListener("input", (event) => {
   const field = event.target.closest("[data-photo-field]");
   if (!field) return;
+  clearSaveFeedback();
   const album = selectedAlbum();
   if (!album) return;
   const photo = (album.previewPhotos || []).find((item) => item.path === field.dataset.photoPath);
   if (!photo) return;
   photo[field.dataset.photoField] = field.value;
+});
+
+elements.form.addEventListener("input", (event) => {
+  if (event.target.closest("[data-photo-field]")) return;
+  clearSaveFeedback();
+});
+
+elements.form.addEventListener("change", () => {
+  clearSaveFeedback();
 });
 
 elements.syncButton.addEventListener("click", async () => {
@@ -117,7 +128,8 @@ elements.form.addEventListener("submit", async (event) => {
     const saved = await saveAlbum(album);
     selectAlbum(saved.id);
     renderHomeManager();
-    setSaveFeedback("success", "保存成功。记得点击“更新主站”同步到网站。");
+    state.saveCount += 1;
+    flashSaveFeedback("success", `保存成功 ${currentTimeLabel()} #${state.saveCount}。记得点击“更新主站”同步到网站。`);
     setStatus("相册信息已保存。点击“更新主站”后，主网页会读取最新 Star 设置。");
   } catch (error) {
     setSaveFeedback("error", `保存失败：${error.message}`);
@@ -186,6 +198,7 @@ function renderAlbumList() {
 
 function selectAlbum(albumId) {
   state.selectedId = albumId;
+  clearSaveFeedback();
   renderAlbumList();
   renderEditor(selectedAlbum());
 }
@@ -385,7 +398,7 @@ async function saveHomepageOrder(options = {}) {
 }
 
 async function saveAlbum(album) {
-  const saved = await putJson(`/api/albums/${encodeURIComponent(album.id)}`, {
+  const response = await putJson(`/api/albums/${encodeURIComponent(album.id)}`, {
     title: album.title || "",
     description: album.description || "",
     featured: album.featured !== false,
@@ -394,6 +407,7 @@ async function saveAlbum(album) {
     starredPhotos: (album.previewPhotos || []).filter((photo) => photo.isStar).map((photo) => photo.path),
     photoDetails: collectPhotoDetails(album)
   });
+  const saved = response.album;
   state.albums = state.albums.map((item) => (item.id === saved.id ? saved : item));
   return saved;
 }
@@ -486,6 +500,26 @@ function setSaveFeedback(type, message) {
   if (!elements.saveFeedback) return;
   elements.saveFeedback.textContent = message;
   elements.saveFeedback.dataset.state = type;
+}
+
+function clearSaveFeedback() {
+  setSaveFeedback("", "");
+}
+
+function flashSaveFeedback(type, message) {
+  setSaveFeedback("", "");
+  requestAnimationFrame(() => {
+    setSaveFeedback(type, message);
+  });
+}
+
+function currentTimeLabel() {
+  return new Date().toLocaleTimeString("zh-CN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false
+  });
 }
 
 async function fetchJson(url) {
