@@ -23,6 +23,10 @@ def test_publish_photos():
         source = source_dir / "image one.jpg"
         Image.new("RGB", (1600, 1000), color=(24, 48, 72)).save(source, "JPEG")
         data_path = data_dir / "photos.json"
+        stale_dir = project_root / "public" / "site-photos" / "albums" / "old album"
+        stale_dir.mkdir(parents=True)
+        stale_file = stale_dir / "old-photo-large.webp"
+        stale_file.write_bytes(b"stale")
         data_path.write_text(
             json.dumps(
                 [
@@ -52,15 +56,18 @@ def test_publish_photos():
 
         assert result["counts"]["published"] == 1
         assert result["counts"]["skipped-non-local"] == 1
+        assert result["cleanup"] == {"removedFiles": 1, "removedDirs": 1}
         assert records[0]["originalSrc"] == "/photos/album%20one/image%20one.jpg"
-        assert records[0]["thumb"].endswith("/site-photos/albums/album-one/photo-test-thumb.webp")
-        assert records[0]["src"].endswith("/site-photos/albums/album-one/photo-test-large.webp")
+        assert records[0]["thumb"].endswith("/site-photos/albums/album%20one/photo-test-thumb.webp")
+        assert records[0]["src"].endswith("/site-photos/albums/album%20one/photo-test-large.webp")
         assert records[0]["width"] == 1600
         assert records[0]["height"] == 1000
         assert records[0]["thumbWidth"] == 720
         assert records[0]["thumbHeight"] == 450
-        assert (project_root / "public" / "site-photos" / "albums" / "album-one" / "photo-test-thumb.webp").exists()
-        assert (project_root / "public" / "site-photos" / "albums" / "album-one" / "photo-test-large.webp").exists()
+        assert (project_root / "public" / "site-photos" / "albums" / "album one" / "photo-test-thumb.webp").exists()
+        assert (project_root / "public" / "site-photos" / "albums" / "album one" / "photo-test-large.webp").exists()
+        assert not stale_file.exists()
+        assert not stale_dir.exists()
 
 
 test_publish_photos()

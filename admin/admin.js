@@ -404,8 +404,10 @@ async function runPublish() {
   try {
     const data = await postJson("/api/publish", {});
     const counts = data.result.publishCounts || {};
+    const removedFiles = data.result.cleanup?.removedFiles || 0;
     const details = publishCountSummary(counts);
-    setStatus(`主站数据和发布图已更新，共 ${data.result.photoCount} 张照片。${details}刷新主站即可看到最新内容。`);
+    const cleanupText = removedFiles > 0 ? `已清理旧发布图 ${removedFiles} 个。` : "";
+    setStatus(`主站数据和发布图已更新，共 ${data.result.photoCount} 张照片。${details}${cleanupText}刷新主站即可看到最新内容。`);
   } catch (error) {
     setStatus(`更新主站失败：${error.message}`);
   } finally {

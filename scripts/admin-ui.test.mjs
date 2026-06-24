@@ -33,6 +33,7 @@ assert.match(adminScript, /setPublishButtonState/);
 assert.match(adminScript, /发布中/);
 assert.match(adminScript, /更新主站失败/);
 assert.match(adminScript, /缺失源文件/);
+assert.match(adminScript, /已清理旧发布图/);
 assert.match(adminScript, /finally/);
 
 console.log("admin ui feedback ok");

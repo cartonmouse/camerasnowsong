@@ -1,7 +1,7 @@
 import argparse
 import json
 from pathlib import Path
-from urllib.parse import quote, unquote
+from urllib.parse import quote, unquote, urlparse
 
 try:
     from PIL import Image, ImageOps
@@ -20,6 +20,14 @@ def public_path(path: Path, public_root: Path) -> str:
     return "/" + "/".join(quote(part) for part in relative.split("/"))
 
 
+def public_file_path(src: str, public_root: Path) -> Path | None:
+    prefix = "/site-photos/albums/"
+    if not isinstance(src, str) or not src.startswith(prefix):
+        return None
+    relative = unquote(urlparse(src).path.lstrip("/"))
+    return public_root / Path(relative)
+
+
 def source_path_from_src(src: str, photos_root: Path) -> Path | None:
     prefix = "/photos/"
     if not isinstance(src, str) or not src.startswith(prefix):
@@ -28,20 +36,14 @@ def source_path_from_src(src: str, photos_root: Path) -> Path | None:
     return photos_root / Path(relative)
 
 
-def album_slug(record: dict) -> str:
+def album_folder_name(record: dict) -> str:
     raw = record.get("album") or record.get("category") or "uncategorized"
-    safe = []
-    for char in str(raw).lower():
-        if char.isascii() and char.isalnum():
-            safe.append(char)
-        elif char in ["-", "_"]:
-            safe.append(char)
-        else:
-            safe.append("-")
-    slug = "".join(safe).strip("-")
-    while "--" in slug:
-        slug = slug.replace("--", "-")
-    return slug or "album"
+    invalid = set('<>:"/\\|?*')
+    safe = ["-" if char in invalid or ord(char) < 32 else char for char in str(raw).strip()]
+    folder = "".join(safe).strip(" .")
+    while "--" in folder:
+        folder = folder.replace("--", "-")
+    return folder or "album"
 
 
 def resize_image(source: Path, target: Path, max_edge: int, quality: int) -> tuple[int, int]:
@@ -63,7 +65,7 @@ def publish_record(record: dict, *, photos_root: Path, public_root: Path, output
         return {**record, "publishStatus": "missing-source"}
 
     stem = record.get("id") or source.stem
-    album = album_slug(record)
+    album = album_folder_name(record)
     thumb_path = output_root / "albums" / album / f"{stem}-thumb.webp"
     large_path = output_root / "albums" / album / f"{stem}-large.webp"
 
@@ -110,13 +112,42 @@ def publish_photos(project_root: Path, *, force: bool = False) -> dict:
         )
         for record in records
     ]
+    cleanup = cleanup_publish_images(next_records, public_root=public_root, albums_root=output_root / "albums")
     data_path.write_text(json.dumps(next_records, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     counts = {}
     for record in next_records:
         status = record.get("publishStatus", "unknown")
         counts[status] = counts.get(status, 0) + 1
-    return {"dataPath": data_path, "records": len(next_records), "counts": counts}
+    return {"dataPath": data_path, "records": len(next_records), "counts": counts, "cleanup": cleanup}
+
+
+def cleanup_publish_images(records: list[dict], *, public_root: Path, albums_root: Path) -> dict:
+    if not albums_root.exists():
+        return {"removedFiles": 0, "removedDirs": 0}
+
+    keep = set()
+    for record in records:
+        for key in ("thumb", "src"):
+            file_path = public_file_path(record.get(key), public_root)
+            if file_path is not None:
+                keep.add(file_path.resolve())
+
+    removed_files = 0
+    for file_path in albums_root.rglob("*.webp"):
+        if file_path.resolve() not in keep:
+            file_path.unlink()
+            removed_files += 1
+
+    removed_dirs = 0
+    for directory in sorted((path for path in albums_root.rglob("*") if path.is_dir()), key=lambda item: len(item.parts), reverse=True):
+        try:
+            directory.rmdir()
+            removed_dirs += 1
+        except OSError:
+            pass
+
+    return {"removedFiles": removed_files, "removedDirs": removed_dirs}
 
 
 def main() -> None:
@@ -128,6 +159,7 @@ def main() -> None:
     result = publish_photos(project_root, force=args.force)
     counts = ", ".join(f"{key}: {value}" for key, value in sorted(result["counts"].items()))
     print(f"Published image data for {result['records']} photos ({counts})")
+    print(f"Cleaned {result['cleanup']['removedFiles']} stale publish images")
     print(f"Updated {result['dataPath'].relative_to(project_root)}")
 
 

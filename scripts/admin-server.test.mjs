@@ -105,6 +105,7 @@ try {
     assert.equal(publishJson.ok, true);
     assert.equal(publishJson.result.photoCount, 1);
     assert.equal(publishJson.result.publishCounts.published, 1);
+    assert.equal(publishJson.result.cleanup.removedFiles, 0);
     const publishedData = JSON.parse(await readFile(path.join(tempRoot, "src", "data", "photos.json"), "utf8"));
     assert.equal(publishedData.length, 1);
     assert.equal(publishedData[0].album, albumId);

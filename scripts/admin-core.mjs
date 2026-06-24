@@ -143,20 +143,31 @@ export async function syncAlbums({ projectRoot }) {
 
 export async function publishSiteData({ projectRoot }) {
   const result = await syncPhotoData({ projectRoot });
-  await publishImages({ projectRoot });
+  const publishResult = await publishImages({ projectRoot });
   const records = JSON.parse(await readFile(result.dataPath, "utf8"));
   return {
     dataPath: result.dataPath,
     photoCount: records.length,
-    publishCounts: countPublishStatuses(records)
+    publishCounts: countPublishStatuses(records),
+    cleanup: publishResult.cleanup
   };
 }
 
 async function publishImages({ projectRoot }) {
-  await execFileAsync("python", [path.join(scriptsRoot, "photo-publish.py"), "--project-root", projectRoot], {
+  const { stdout } = await execFileAsync("python", [path.join(scriptsRoot, "photo-publish.py"), "--project-root", projectRoot], {
     cwd: projectRoot,
     maxBuffer: 1024 * 1024 * 10
   });
+  return readPublishResult({ projectRoot, stdout });
+}
+
+function readPublishResult({ projectRoot, stdout }) {
+  const match = stdout.match(/Cleaned (\d+) stale publish images/);
+  return {
+    cleanup: {
+      removedFiles: match ? Number.parseInt(match[1], 10) : 0
+    }
+  };
 }
 
 function countPublishStatuses(records) {
