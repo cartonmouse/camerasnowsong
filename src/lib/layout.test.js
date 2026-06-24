@@ -33,8 +33,8 @@ assert.match(lightboxImageRule, /background:\s*#ddd8ce;/, "opened photo letterbo
 assert.match(lightboxImageRule, /box-shadow:/, "opened photo should have subtle depth against the gallery wall background");
 
 const photoImageSource = readFileSync("src/components/PhotoImage.jsx", "utf8");
-assert.match(photoImageSource, /width=\{photo\.width \|\| undefined\}/, "photo images should include width to reserve layout space");
-assert.match(photoImageSource, /height=\{photo\.height \|\| undefined\}/, "photo images should include height to reserve layout space");
+assert.match(photoImageSource, /width=\{width \|\| undefined\}/, "photo images should include width to reserve layout space");
+assert.match(photoImageSource, /height=\{height \|\| undefined\}/, "photo images should include height to reserve layout space");
 assert.match(photoImageSource, /loading="lazy"/, "photo images should lazy-load instead of all loading at once");
 assert.match(photoImageSource, /decoding="async"/, "photo images should decode asynchronously");
 

@@ -13,7 +13,7 @@ export default function PhotoGrid({ photos, onSelect }) {
           className="photo-card"
           onClick={() => onSelect(photo, photos)}
         >
-          <PhotoImage photo={photo} />
+          <PhotoImage photo={photo} variant="thumb" />
           <span className="photo-meta">
             <span>{photo.title}</span>
             <span>{photo.year}</span>

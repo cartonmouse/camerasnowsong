@@ -18,6 +18,9 @@ pnpm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+__pycache__/
+.pytest_cache/
+*.pyc
 
 # Keep photo metadata/configs, but do not commit real image files.
 public/photos/**/*.jpg

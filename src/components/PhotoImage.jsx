@@ -1,16 +1,20 @@
-export default function PhotoImage({ photo, className = "" }) {
-  if (photo.src) {
-    const src = photo.src.startsWith("/")
-      ? `${import.meta.env.BASE_URL.replace(/\/$/, "")}${photo.src}`
-      : photo.src;
+export default function PhotoImage({ photo, className = "", variant = "full" }) {
+  const imageSrc = variant === "thumb" ? photo.thumb || photo.src : photo.src;
+  const width = variant === "thumb" ? photo.thumbWidth || photo.width : photo.width;
+  const height = variant === "thumb" ? photo.thumbHeight || photo.height : photo.height;
+
+  if (imageSrc) {
+    const src = imageSrc.startsWith("/")
+      ? `${import.meta.env.BASE_URL.replace(/\/$/, "")}${imageSrc}`
+      : imageSrc;
 
     return (
       <img
         className={className}
         src={src}
         alt={photo.title}
-        width={photo.width || undefined}
-        height={photo.height || undefined}
+        width={width || undefined}
+        height={height || undefined}
         loading="lazy"
         decoding="async"
       />
