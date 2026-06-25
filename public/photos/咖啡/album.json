@@ -6,9 +6,6 @@
   "description": "我做的咖啡",
   "featured": true,
   "photos": {
-    "星巴克杯子2.JPG": {
-      "star": true
-    },
     "IMG_0928.jpg": {
       "star": true,
       "title": "我自己做的星巴克胸牌",

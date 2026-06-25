@@ -6,9 +6,6 @@
   "description": "我拍过的许多晚霞",
   "featured": true,
   "photos": {
-    "火烧云.jpg": {
-      "star": true
-    },
     "鱼嘴晚霞.jpg": {
       "star": true
     }
