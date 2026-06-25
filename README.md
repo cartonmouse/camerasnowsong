@@ -138,7 +138,6 @@ https://cartonmouse.github.io/camerasnowsong/
 
 更完整的维护说明见：
 
-- [个人摄影网站使用手册](./个人摄影网站使用手册.md)
 - [版权与复用说明](./NOTICE.md)
 
 ## 版权与许可
