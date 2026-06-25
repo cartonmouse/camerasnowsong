@@ -22,5 +22,16 @@
       "featured": false
     }
   },
-  "photos": {}
+  "photos": {
+    "IMG_0618.jpg": {
+      "title": "我的佳能550D",
+      "description": "这是我的第一部相机：佳能550D，它帮助我记录了很多宝贵的瞬间",
+      "star": true
+    },
+    "IMG_0623.jpg": {
+      "title": "我的佳能550D",
+      "description": "这是我的第一部相机：佳能550D，它帮助我记录了很多宝贵的瞬间"
+    }
+  },
+  "cover": ""
 }

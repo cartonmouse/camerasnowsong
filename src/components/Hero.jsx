@@ -1,6 +1,10 @@
 import PhotoImage from "./PhotoImage.jsx";
+import { getHeroCaption } from "../lib/heroCaption.js";
 
 export default function Hero({ photo, onViewPortfolio }) {
+  const caption = getHeroCaption(photo);
+  const hasCaption = Boolean(caption.title || caption.location);
+
   return (
     <section className="hero">
       <div className="hero-copy">
@@ -16,10 +20,12 @@ export default function Hero({ photo, onViewPortfolio }) {
       {photo ? (
         <div className="hero-frame">
           <PhotoImage photo={photo} />
-          <div className="hero-caption">
-            <span>{photo.title}</span>
-            <span>{photo.location}</span>
-          </div>
+          {hasCaption ? (
+            <div className="hero-caption">
+              {caption.title ? <span>{caption.title}</span> : null}
+              {caption.location ? <span>{caption.location}</span> : null}
+            </div>
+          ) : null}
         </div>
       ) : null}
     </section>

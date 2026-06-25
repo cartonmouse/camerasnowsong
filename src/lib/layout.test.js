@@ -32,6 +32,16 @@ assert.match(lightboxImageRule, /object-fit:\s*contain;/, "opened photos should 
 assert.match(lightboxImageRule, /background:\s*#ddd8ce;/, "opened photo letterbox background should use a neutral gallery wall color");
 assert.match(lightboxImageRule, /box-shadow:/, "opened photo should have subtle depth against the gallery wall background");
 
+const lightboxPanelRule = styles.match(/\.lightbox-panel\s*\{[^}]+\}/s)?.[0] || "";
+assert.match(
+  lightboxPanelRule,
+  /calc\(100vh\s*-/,
+  "opened photos should leave room for the lightbox outer padding"
+);
+
+const lightboxCopyRule = styles.match(/\.lightbox-copy\s*\{[^}]+\}/s)?.[0] || "";
+assert.match(lightboxCopyRule, /overflow:\s*auto;/, "opened photo details should scroll instead of being clipped");
+
 const photoImageSource = readFileSync("src/components/PhotoImage.jsx", "utf8");
 assert.match(photoImageSource, /width=\{width \|\| undefined\}/, "photo images should include width to reserve layout space");
 assert.match(photoImageSource, /height=\{height \|\| undefined\}/, "photo images should include height to reserve layout space");

@@ -22,5 +22,20 @@
       "featured": false
     }
   },
-  "photos": {}
+  "photos": {
+    "1.JPG": {
+      "title": "在宿舍等待日出",
+      "description": "11月底，从我的宿舍走廊正好可以看到日出东方，非常漂亮"
+    },
+    "2.JPG": {
+      "title": "在宿舍等待日出",
+      "description": "11月底，从我的宿舍走廊正好可以看到日出东方，非常漂亮",
+      "star": true
+    },
+    "3.jpg": {
+      "title": "在宿舍等待日出",
+      "description": "11月底，从我的宿舍走廊正好可以看到日出东方，非常漂亮"
+    }
+  },
+  "cover": ""
 }

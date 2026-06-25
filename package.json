@@ -12,7 +12,7 @@
     "photos:publish": "python scripts/photo-publish.py",
     "photos:publish:force": "python scripts/photo-publish.py --force",
     "admin": "node scripts/admin-server.mjs",
-    "test:data": "node src/lib/photos.test.js && node src/lib/lightbox.test.js && node scripts/photo-sync.test.mjs && python scripts/photo-publish.test.py && node src/lib/layout.test.js",
+    "test:data": "node src/lib/photos.test.js && node src/lib/lightbox.test.js && node src/lib/heroCaption.test.js && node scripts/photo-sync.test.mjs && python scripts/photo-publish.test.py && node src/lib/layout.test.js",
     "test:admin": "node scripts/admin-core.test.mjs && node scripts/admin-server.test.mjs && node scripts/admin-ui.test.mjs"
   },
   "dependencies": {
