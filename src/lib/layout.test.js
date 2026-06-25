@@ -52,6 +52,11 @@ assert.match(
 const lightboxCopyRule = styles.match(/\.lightbox-copy\s*\{[^}]+\}/s)?.[0] || "";
 assert.match(lightboxCopyRule, /overflow:\s*auto;/, "opened photo details should scroll instead of being clipped");
 
+const mobileRules = styles.match(/@media \(max-width: 860px\)\s*\{[\s\S]+?\n\}/)?.[0] || "";
+const mobileLightboxPanelRule = mobileRules.match(/\.lightbox-panel\s*\{[^}]+\}/s)?.[0] || "";
+assert.doesNotMatch(mobileLightboxPanelRule, /(^|\n)\s*height\s*:/, "mobile lightbox panel should not force a fixed height");
+assert.match(mobileRules, /\.lightbox-copy\s*\{[^}]*max-height:\s*none;/s, "mobile lightbox copy should sit below the photo");
+
 const photoImageSource = readFileSync("src/components/PhotoImage.jsx", "utf8");
 assert.match(photoImageSource, /width=\{width \|\| undefined\}/, "photo images should include width to reserve layout space");
 assert.match(photoImageSource, /height=\{height \|\| undefined\}/, "photo images should include height to reserve layout space");

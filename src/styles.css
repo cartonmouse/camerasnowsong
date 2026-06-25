@@ -651,19 +651,31 @@ dd {
     justify-self: start;
   }
 
+  .lightbox {
+    place-items: start center;
+    overflow: auto;
+  }
+
   .lightbox-panel {
-    height: min(92vh, 900px);
+    align-items: start;
+    max-height: none;
+    overflow: visible;
   }
 
   .lightbox-panel .photo-placeholder,
   .lightbox-panel img {
-    max-height: 58vh;
+    max-height: 56dvh;
   }
 
   .lightbox-nav {
-    top: calc(29vh + 18px);
+    top: calc(28dvh + 18px);
     width: 40px;
     height: 48px;
+  }
+
+  .lightbox-copy {
+    max-height: none;
+    padding: 0 12px 12px;
   }
 
   .lightbox-nav-previous {
