@@ -6,7 +6,7 @@ import { getAlbumDetails, getAlbums, getLightboxContextPhotos, getPhotosByAlbum,
 const ALBUM_PAGE_SIZE = 8;
 
 export default function Portfolio({ photos, onSelectPhoto }) {
-  const [view, setView] = useState("topic");
+  const [view, setView] = useState("album");
   const [filter, setFilter] = useState("all");
   const [albumPage, setAlbumPage] = useState(0);
   const [albumExpanded, setAlbumExpanded] = useState(false);

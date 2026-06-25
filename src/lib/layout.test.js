@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const photoGridSource = readFileSync("src/components/PhotoGrid.jsx", "utf8");
+const portfolioSource = readFileSync("src/pages/Portfolio.jsx", "utf8");
 const styles = readFileSync("src/styles.css", "utf8");
 
 assert.equal(
@@ -33,6 +34,8 @@ const photoGridRule = styles.match(/\.photo-grid\s*\{[^}]+\}/s)?.[0] || "";
 assert.match(photoGridRule, /display:\s*grid;/, "photo grid should use row-major grid ordering");
 assert.match(photoGridRule, /grid-template-columns:/, "photo grid should define responsive columns");
 assert.doesNotMatch(styles, /column-count:/, "photo grid should not use column-count masonry ordering");
+
+assert.match(portfolioSource, /useState\("album"\)/, "portfolio should open in album view by default");
 
 const lightboxImageRule = styles.match(/\.lightbox-panel img\s*\{[^}]+\}/s)?.[0] || "";
 assert.match(lightboxImageRule, /width:\s*auto;/, "opened photos should keep natural width when constrained by viewport");
