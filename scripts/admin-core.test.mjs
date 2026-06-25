@@ -15,7 +15,6 @@ import {
 
 const tempRoot = await mkdtemp(path.join(tmpdir(), "album-admin-"));
 const landscape = "\u98ce\u666f";
-const travel = "\u65c5\u884c";
 const shaJin = "\u6c99\u91d1";
 const portrait = "\u4eba\u50cf";
 
@@ -203,7 +202,6 @@ try {
   const created = await readAlbum({ projectRoot: tempRoot, albumId: "131\u6c34\u957f\u57ce" });
   assert.equal(created.title, "131\u6c34\u957f\u57ce");
   assert.ok(created.topics.includes(landscape));
-  assert.ok(created.topics.includes(travel));
   assert.equal(created.status, "configured");
 
   await saveAlbumMetadata({

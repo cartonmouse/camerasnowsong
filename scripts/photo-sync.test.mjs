@@ -205,7 +205,7 @@ try {
 
   const createdAlbum = JSON.parse(await readFile(path.join(photosRoot, tiananmen, "album.json"), "utf8"));
   assert.equal(createdAlbum.title, tiananmen);
-  assert.deepEqual(createdAlbum.topics, ["城市", "纪实"]);
+  assert.deepEqual(createdAlbum.topics, ["人文"]);
   assert.equal(createdAlbum.description, `一组关于${tiananmen}的照片。`);
   assert.equal(createdAlbum.featured, true);
   assert.equal(createdAlbum._comment, "photos 只需要填写那些想单独介绍的照片，不需要每张都写。");
@@ -233,7 +233,7 @@ try {
   assert.deepEqual(createdXingjianya.topics, ["Cosplay", portrait]);
 
   const createdRobin = JSON.parse(await readFile(path.join(photosRoot, robin, "album.json"), "utf8"));
-  assert.deepEqual(createdRobin.topics, ["Cosplay", portrait, "舞台"]);
+  assert.deepEqual(createdRobin.topics, ["Cosplay", portrait, "人文"]);
 
   updatedShaJin.photos["IMG_0704.jpg"] = {
     title: "",

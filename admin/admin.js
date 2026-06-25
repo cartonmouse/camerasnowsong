@@ -5,7 +5,7 @@ const state = {
   editingPhotoPath: "",
   saveCount: 0,
   homepage: { items: [], limit: 12 },
-  topics: ["风景", "人像", "Cosplay", "城市", "旅行", "舞台", "纪实", "日常", "待分类"]
+  topics: ["风景", "人像", "Cosplay", "人文", "日常"]
 };
 
 const elements = {
