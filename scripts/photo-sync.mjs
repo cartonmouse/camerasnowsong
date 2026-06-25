@@ -177,6 +177,7 @@ function applyHomepageConfig(records, homepage) {
     }
     return {
       ...record,
+      star: true,
       homeOrder: homepageItem.homeOrder,
       homeHidden: homepageItem.homeHidden,
       homeLimit: homepage.limit

@@ -149,8 +149,7 @@ try {
       photos: {
         "IMG_9000.jpg": {
           title: photoTitle,
-          description: photoDescription,
-          star: true
+          description: photoDescription
         }
       }
     }),
