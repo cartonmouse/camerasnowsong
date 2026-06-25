@@ -21,12 +21,22 @@ const heroImageRule = styles.match(/\.hero-frame img\s*\{[^}]+\}/s)?.[0] || "";
 assert.match(heroImageRule, /height:\s*auto;/, "hero photo should keep its intrinsic aspect ratio");
 assert.doesNotMatch(heroImageRule, /min-height:/, "hero photo should not be stretched by placeholder sizing");
 
+const heroRule = styles.match(/\.hero\s*\{[^}]+\}/s)?.[0] || "";
+assert.match(heroRule, /grid-template-columns:\s*minmax\(0,\s*1fr\)\s*minmax\(300px,\s*1fr\);/, "hero text and image should have balanced desktop columns");
+
+const heroHeadingRule = styles.match(/\.hero-copy h1\s*\{[^}]+\}/s)?.[0] || "";
+assert.match(heroHeadingRule, /max-width:\s*100%;/, "hero heading should stay inside the text column");
+assert.doesNotMatch(heroHeadingRule, /100vw/, "hero heading should not size itself from the whole viewport");
+assert.match(heroHeadingRule, /font-size:\s*clamp\(2\.8rem,\s*3\.8vw,\s*4\.2rem\);/, "single-line hero heading should stay small enough to avoid the image column");
+
 const photoGridRule = styles.match(/\.photo-grid\s*\{[^}]+\}/s)?.[0] || "";
 assert.match(photoGridRule, /display:\s*grid;/, "photo grid should use row-major grid ordering");
 assert.match(photoGridRule, /grid-template-columns:/, "photo grid should define responsive columns");
 assert.doesNotMatch(styles, /column-count:/, "photo grid should not use column-count masonry ordering");
 
 const lightboxImageRule = styles.match(/\.lightbox-panel img\s*\{[^}]+\}/s)?.[0] || "";
+assert.match(lightboxImageRule, /width:\s*auto;/, "opened photos should keep natural width when constrained by viewport");
+assert.match(lightboxImageRule, /height:\s*auto;/, "opened photos should keep natural height when constrained by viewport");
 assert.match(lightboxImageRule, /max-height:/, "opened photos should fit within the viewport height");
 assert.match(lightboxImageRule, /object-fit:\s*contain;/, "opened photos should show the complete image without cropping");
 assert.match(lightboxImageRule, /background:\s*#ddd8ce;/, "opened photo letterbox background should use a neutral gallery wall color");
@@ -35,8 +45,8 @@ assert.match(lightboxImageRule, /box-shadow:/, "opened photo should have subtle 
 const lightboxPanelRule = styles.match(/\.lightbox-panel\s*\{[^}]+\}/s)?.[0] || "";
 assert.match(
   lightboxPanelRule,
-  /calc\(100vh\s*-/,
-  "opened photos should leave room for the lightbox outer padding"
+  /max-height:\s*calc\(100dvh\s*-/,
+  "opened photos should use the visible viewport height for the lightbox"
 );
 
 const lightboxCopyRule = styles.match(/\.lightbox-copy\s*\{[^}]+\}/s)?.[0] || "";

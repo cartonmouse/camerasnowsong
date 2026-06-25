@@ -12,7 +12,6 @@ export default function Home({ photos, onNavigate, onSelectPhoto }) {
         <div className="section-heading">
           <p className="eyebrow">精选</p>
           <h2>近期挑选的照片</h2>
-          <p>先用少量作品建立网站的气质，再随着拍摄慢慢扩展。</p>
         </div>
         <PhotoGrid photos={featured} onSelect={onSelectPhoto} />
       </section>
