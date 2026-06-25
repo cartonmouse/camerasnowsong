@@ -355,8 +355,9 @@ h2 {
 
 .photo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 360px));
   align-items: start;
+  justify-content: start;
   gap: clamp(24px, 3vw, 40px) clamp(14px, 2vw, 24px);
 }
 
