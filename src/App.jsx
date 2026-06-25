@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Header from "./components/Header.jsx";
+import Footer from "./components/Footer.jsx";
 import PhotoLightbox from "./components/PhotoLightbox.jsx";
 import Home from "./pages/Home.jsx";
 import Portfolio from "./pages/Portfolio.jsx";
@@ -37,6 +38,7 @@ export default function App() {
       ) : null}
       {page === "portfolio" ? <Portfolio photos={photos} onSelectPhoto={openLightbox} /> : null}
       {page === "about" ? <About /> : null}
+      <Footer />
       {lightboxState ? (
         <PhotoLightbox
           photo={lightboxState.photo}

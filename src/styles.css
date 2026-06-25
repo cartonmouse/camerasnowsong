@@ -77,6 +77,23 @@ button {
   background: rgba(38, 37, 34, 0.08);
 }
 
+.site-footer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 44px clamp(18px, 4vw, 56px) 52px;
+  color: #837a6d;
+  border-top: 1px solid rgba(38, 37, 34, 0.1);
+  font-size: 0.82rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer p + p {
+  margin-top: 6px;
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 1fr);

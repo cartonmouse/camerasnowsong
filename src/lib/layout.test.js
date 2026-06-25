@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 
 const photoGridSource = readFileSync("src/components/PhotoGrid.jsx", "utf8");
 const portfolioSource = readFileSync("src/pages/Portfolio.jsx", "utf8");
+const appSource = readFileSync("src/App.jsx", "utf8");
 const styles = readFileSync("src/styles.css", "utf8");
 
 assert.equal(
@@ -36,6 +37,11 @@ assert.match(photoGridRule, /grid-template-columns:/, "photo grid should define 
 assert.doesNotMatch(styles, /column-count:/, "photo grid should not use column-count masonry ordering");
 
 assert.match(portfolioSource, /useState\("album"\)/, "portfolio should open in album view by default");
+
+const footerSource = readFileSync("src/components/Footer.jsx", "utf8");
+assert.match(appSource, /<Footer \/>/, "site should render a footer on every page");
+assert.match(footerSource, /All photographs and text are reserved/, "footer should include a concise copyright notice");
+assert.match(footerSource, /未经许可/, "footer should tell visitors reuse requires permission");
 
 const lightboxImageRule = styles.match(/\.lightbox-panel img\s*\{[^}]+\}/s)?.[0] || "";
 assert.match(lightboxImageRule, /width:\s*auto;/, "opened photos should keep natural width when constrained by viewport");
