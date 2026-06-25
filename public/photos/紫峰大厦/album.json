@@ -1,6 +1,8 @@
 {
   "title": "紫峰大厦",
-  "topics": [],
+  "topics": [
+    "风景"
+  ],
   "description": "一组关于紫峰大厦的照片。",
   "featured": true,
   "_comment": "photos 只需要填写那些想单独介绍的照片，不需要每张都写。",
@@ -22,5 +24,6 @@
       "featured": false
     }
   },
-  "photos": {}
+  "photos": {},
+  "cover": ""
 }

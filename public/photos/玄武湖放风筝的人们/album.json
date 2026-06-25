@@ -1,7 +1,8 @@
 {
   "title": "玄武湖放风筝的人们",
   "topics": [
-    "风景"
+    "人像",
+    "人文"
   ],
   "description": "一组关于玄武湖放风筝的人们的照片。",
   "featured": true,
@@ -24,5 +25,6 @@
       "featured": false
     }
   },
-  "photos": {}
+  "photos": {},
+  "cover": ""
 }

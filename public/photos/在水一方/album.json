@@ -1,7 +1,7 @@
 {
   "title": "在水一方",
   "topics": [
-    "风景"
+    "人像"
   ],
   "description": "一组关于在水一方的照片。",
   "featured": true,
@@ -24,5 +24,6 @@
       "featured": false
     }
   },
-  "photos": {}
+  "photos": {},
+  "cover": ""
 }

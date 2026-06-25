@@ -1,6 +1,8 @@
 {
   "title": "桥洞剪影",
-  "topics": [],
+  "topics": [
+    "人文"
+  ],
   "description": "一组关于桥洞剪影的照片。",
   "featured": true,
   "_comment": "photos 只需要填写那些想单独介绍的照片，不需要每张都写。",

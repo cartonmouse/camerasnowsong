@@ -1,6 +1,9 @@
 {
   "title": "人文",
-  "topics": [],
+  "topics": [
+    "人像",
+    "人文"
+  ],
   "description": "一组关于人文的照片。",
   "featured": true,
   "_comment": "photos 只需要填写那些想单独介绍的照片，不需要每张都写。",
